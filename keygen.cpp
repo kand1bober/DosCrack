@@ -21,18 +21,19 @@ typedef struct PicturePosition
     point UL;
     float delta_x;
     float delta_y;
+    bool move_to_right;
+    bool move_down;
 }
 PicPos;
 
 void patcher();
-void ChangeDirection( PicPos position );
+void ChangeDirection( PicPos *position );
 
 int main()
 {
     sf::RenderWindow window(sf::VideoMode( 854, 480 ), "keygen_window");
 
     //-----------image work----------------------
-    bool move_to_right = true;
     sf::Texture texture;
     texture.loadFromFile("src/trolpic.jpg");
     PicPos position_1 = {};
@@ -40,19 +41,24 @@ int main()
     position_1.height = 180;
     position_1.UL = { 0.0f, 0.0f };
     position_1.delta_x = 2.0f;
-    position_1.delta_y = 0.0f;
+    position_1.delta_y = 2.0f;
+    position_1.move_to_right = true;
+    position_1.move_down = true;
 
     sf::Sprite sprite1(texture);
     sprite1.setScale(0.5f, 0.5f);
-    // float x_position_1 = 150.0f, y_position_1 = 40.0f;
+    //-------------------------------------------
 
+    //-------------------------------------------
     bool progress_ready = false;
     sf::Texture progress_frame;
     progress_frame.loadFromFile("src/frame.png");
     sf::Sprite sprite2(progress_frame);
     sprite2.setScale(1.0f, 1.0f);
-    float x_position_2 = 0.0f, y_position_2 = 400.0f;
+    float x_position_2 = 139.5f, y_position_2 = 400.0f;
+    //-------------------------------------------
 
+    //-------------------------------------------
     sf::Texture progress_bar;
     progress_bar.loadFromFile("src/bar.png");
     sf::Sprite sprite3(progress_bar);
@@ -115,29 +121,8 @@ int main()
         }
 
         //----------moving sprite1----------------
+        ChangeDirection( &position_1 );
         sprite1.setPosition( position_1.UL.x, position_1.UL.y );
-
-        // if( move_to_right )
-        // {
-        //     position_1.delta_x = 2.0f;
-        // }
-        // else 
-        // {
-        //     position_1.delta_x =-2.0f;      
-        // }
-        void ChangeDirection( PicPos position );
-        position_1.UL.x += position_1.delta_x;
-        position_1.UL.y += position_1.delta_y;
-
-        // if( position_1.UL.x >= 350 )
-        // {
-        //     move_to_right = false;
-        // }
-        // if( position_1.UL.x <= 150.5 )
-        // {
-        //     move_to_right = true;
-        // }
-
 
         //--------------sprite2-------------------
         sprite2.setPosition( x_position_2, y_position_2 );
@@ -161,17 +146,17 @@ int main()
         //clear previous frame
         window.clear();
 
+        
+        //-------draw---------
+        window.draw(sprite1);
+        window.draw(text2);
+        window.draw(sprite2);
+        window.draw(sprite3);
+        //--------------------
         if( progress_ready )
         {
             window.draw(text1);
         }
-        
-        //-------draw---------
-        window.draw(text2);
-        window.draw(sprite2);
-        window.draw(sprite3);
-        window.draw(sprite1);
-        //--------------------
         
         window.display();
     }
@@ -180,38 +165,49 @@ int main()
 }
 
 
-void ChangeDirection( PicPos position )
+void ChangeDirection( PicPos *position )
 {
-    float monitor_height = 480.0f;
     float monitor_width = 854.0f;
+    float monitor_height = 480.0f;
     
     //Left corner 
-    if( position.UL.x < EPSILON )
+    if( position->UL.x < 0.1f )
     {
-        position.delta_x = 2.0f; 
-
-        if( position.UL.y < EPSILON )
-        {
-            position.delta_y = -2.0f;
-        }
-        else if( fabs( position.UL.y + position.height - monitor_height ) < EPSILON )
-        {   
-            position.delta_y = 2.0f; 
-        }
+        position->move_to_right = true;
     }
-    //Right corner 
-    else if( fabs( position.UL.x + position.width - monitor_width ) < EPSILON )
+    else if( position->UL.x + position->width >= (monitor_width - 0.1f) )
     {
-        position.delta_x = -2.0f;
+        position->move_to_right = false;
+    }
 
-        if( position.UL.y < EPSILON )
-        {
-            position.delta_y = -2.0f;
-        }
-        else if( fabs( position.UL.y + position.height - monitor_height ) < EPSILON )
-        {   
-            position.delta_y = 2.0f; 
-        }
+    if( position->UL.y < 0.1f )
+    {
+        position->move_down = true;
+    }
+    else if( position->UL.y + position->height >= (monitor_height - 0.1f) )
+    {
+        position->move_down = false;
+    }
+
+    position->UL.x += position->delta_x;
+    position->UL.y += position->delta_y;
+
+    if( position->move_to_right )
+    {
+        position->delta_x = 4.0f;
+    }
+    else
+    {
+        position->delta_x = -4.0f;
+    }
+
+    if( position->move_down )
+    {
+        position->delta_y = 2.5f;
+    }
+    else 
+    {
+        position->delta_y = -2.5f;
     }
 }
 
