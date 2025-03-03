@@ -34,7 +34,7 @@ int main()
     //-----------image work----------------------
     bool move_to_right = true;
     sf::Texture texture;
-    texture.loadFromFile("trolpic.jpg");
+    texture.loadFromFile("src/trolpic.jpg");
     PicPos position_1 = {};
     position_1.width = 320;
     position_1.height = 180;
@@ -48,13 +48,13 @@ int main()
 
     bool progress_ready = false;
     sf::Texture progress_frame;
-    progress_frame.loadFromFile("frame.png");
+    progress_frame.loadFromFile("src/frame.png");
     sf::Sprite sprite2(progress_frame);
     sprite2.setScale(1.0f, 1.0f);
     float x_position_2 = 0.0f, y_position_2 = 400.0f;
 
     sf::Texture progress_bar;
-    progress_bar.loadFromFile("bar.png");
+    progress_bar.loadFromFile("src/bar.png");
     sf::Sprite sprite3(progress_bar);
     float x_position_3 = 148.3f, y_position_3 = 408.0f;
     float x_scale_3 = 0.0f, y_scale_3 = 1.0f;
@@ -63,7 +63,7 @@ int main()
 
     //-------------Text--------------------------
     sf::Font font;
-    font.loadFromFile("PixelGame.otf");
+    font.loadFromFile("src/PixelGame.otf");
     sf::Text text1("your code was cracked =)", font, 40);
     text1.move( 240.0f, 360.0f );
 
@@ -80,7 +80,7 @@ int main()
 
     //---------------Music-----------------------
     sf::Music music;
-    music.openFromFile("Cyberpunk_8_bit.mp3");
+    music.openFromFile("src/Cyberpunk_8_bit.mp3");
     //-------------------------------------------
 
     music.play();
