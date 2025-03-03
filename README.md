@@ -42,9 +42,9 @@
     3. Когда прогресс-бар в окне доходит до конца, 
     запускается функция patcher(), которая переписывает один байт на позиции 44-ого байта от начала файла
 
-<img src="src/byte11.png" alt="Было" width="590" height="350">
+<img src="src/byte11.png" alt="Было" width="590" height="400">
 
-<img src="src/byte07.png" alt="Cnfkj" width="590" height="350">
+<img src="src/byte07.png" alt="Cnfkj" width="590" height="400">
 
     Изменяемый байт представляет из себя относительный адрес для Jump'a. 
     Таким образом Jump передаёт управление функции, 
